@@ -11,6 +11,7 @@ public class FirstClientHandler extends ChannelInboundHandlerAdapter {
 
     //覆盖了该方法
     //客户端连接建立成功后，调用到channelActive()方法 我们在该方法中编写向服务端写数据的逻辑
+    //个人理解：第一次建立连接的时候调用 之后都不会再调用
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         System.out.println(new Date() + ": 客户端写出数据");
@@ -22,6 +23,7 @@ public class FirstClientHandler extends ChannelInboundHandlerAdapter {
         ctx.channel().writeAndFlush(buffer);
     }
 
+    //个人理解：虽然类继承ChannelInboundHandlerApdapter 是处理输入的 但是可以在输入处理完之后再输出
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ByteBuf byteBuf = (ByteBuf) msg;
         System.out.println(new Date() + ":客户端读到数据 -> " + byteBuf.toString(Charset.forName("utf-8")));
