@@ -1,3 +1,5 @@
+package client;
+
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -6,7 +8,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
 
 public class NettyClient {
     private static final int MAX_RETRY = 5;
@@ -25,7 +26,8 @@ public class NettyClient {
                 //定义连接的业务处理逻辑
                 .handler(new ChannelInitializer<SocketChannel>() {
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-
+                        // 向服务端写入数据逻辑  在FirstClientHandler中
+                        socketChannel.pipeline().addLast(new FirstClientHandler());
                     }
                 });
         //调用connect方法进行连接

@@ -1,3 +1,6 @@
+package server;
+
+import client.FirstClientHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -47,6 +50,9 @@ public class NettyServer {
                     protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
                         //当有连接进入的时候才会print
                         System.out.println(nioSocketChannel.attr(clientKey).get());
+
+                        //读取来自客户端的业务逻辑 重点业务逻辑在FirstServerhandler
+                        nioSocketChannel.pipeline().addLast(new FirstServerHandler());
                     }
                 });
 
@@ -62,7 +68,6 @@ public class NettyServer {
             }
         });*/
         bind(serverBootstrap, 1000);
-
 
     }
     //如果端口被占用等原因绑定失败 则端口号 +1 继续尝试绑定
