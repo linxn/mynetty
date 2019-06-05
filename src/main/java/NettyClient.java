@@ -41,6 +41,7 @@ public class NettyClient {
     }
 
     //失败重连，并设置
+    //断线重连和失败重连是不一样的
     private static void connect(Bootstrap bootstrap, String host, int port, int retry) {
         bootstrap.connect(host, port).addListener(future -> {
             if (future.isSuccess()) {
@@ -51,6 +52,7 @@ public class NettyClient {
                 int order = (MAX_RETRY - retry) + 1;
                 int delay = 1 << order;
                 System.err.println(new Date() + ": 连接失败，第" + order + "次重连...");
+                //schedule可以实现定时任务逻辑
                 bootstrap.config().group().schedule(() -> connect(bootstrap, host, port, retry - 1), delay, TimeUnit.SECONDS);
             }
         });
