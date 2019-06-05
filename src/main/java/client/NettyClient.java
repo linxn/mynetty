@@ -27,6 +27,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         // 向服务端写入数据逻辑  在FirstClientHandler中
+                        //ch.pipeline()返回的是和这条连接相关的逻辑处理链 采用了责任链模式
                         socketChannel.pipeline().addLast(new FirstClientHandler());
                     }
                 });
